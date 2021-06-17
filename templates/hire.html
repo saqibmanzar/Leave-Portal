@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block title %}{{ hire_tag }}{% endblock %}
+{% block speicific_style %}
+<!--  jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+<!-- Bootstrap Date-Picker Plugin -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<style type="text/css">
+.signup-form {
+	width: 500px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+.signup-form h2 {
+	color: #333;
+	margin: 0 0 30px 0;
+	display: inline-block;
+	padding: 0 30px 10px 0;
+	border-bottom: 3px solid #5cd3b4;
+}
+.signup-form form {
+	color: #999;
+	border-radius: 3px;
+	margin-bottom: 15px;
+	background: #fff;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 30px;
+}
+.signup-form .form-group row {
+	margin-bottom: 20px;
+}
+.signup-form label {
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 2;
+}
+.signup-form input[type="checkbox"] {
+	position: relative;
+	top: 1px;
+}
+.signup-form .btn {        
+	font-size: 16px;
+	font-weight: bold;
+	background: #5cd3b4;
+	border: none;
+	margin-top: 20px;
+	min-width: 140px;
+}
+.signup-form .btn:hover, .signup-form .btn:focus {
+	background: #41cba9;
+	outline: none !important;
+}
+.signup-form a {
+	color: #5cd3b4;
+	text-decoration: underline;
+}
+.signup-form a:hover {
+	text-decoration: none;
+}
+.signup-form form a {
+	color: #5cd3b4;
+	text-decoration: none;
+}	
+.signup-form form a:hover {
+	text-decoration: underline;
+}
+</style>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+      var date_input=$('input[name="startdate"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'yyyy-mm-dd',
+        container: container,
+        todayHighlight: true,
+        autoclose: true
+      };
+      //$('#date').datepicker('setDate', new Date());
+      date_input.datepicker(options);
+
+      var enddate = $('input[name=enddate')
+      enddate.datepicker(options);
+    })
+
+    
+</script>
+
+{% endblock %}
+{% block content %}
+<div class="signup-form">
+	<form class="form-horizontal" action="" method="post">
+		<div class="row">
+        	<div class="col-8 offset-4">
+				<h2>{{hire_tag}}</h2>
+			</div>	
+      	</div>
+      	{% if hire_mssg %}
+        	<p class="error"><strong>Error/Message:</strong> {{ hire_mssg }}
+    	{% endif %}
+
+		<div class="form-group">
+		    <label for="facultyid">Faculty ID</label>
+		    <input type="number" class="form-control" name='facultyid' id="facultyid" placeholder="Enter Faculty ID" required="required">
+		</div>
+
+		{% if hire == 'Faculty'%}
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" required="required">
+			</div>
+			<div class="form-group">
+				<label >Email address</label>
+				<input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email" required="required">
+				<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+			</div>
+			<div class="form-group">
+				<label >Mobile Number</label>
+				<input type="text" class="form-control" name="mobile" id="mobile" placeholder="Enter Mobile Number" required="required" minlength="10" maxlength="10">
+				<small class="form-text text-muted">It should be having length of 10 digit</small>
+			</div>
+		{% endif %}
+	  
+	  	{% if hire == 'HoD' %}
+			<div class="form-group">
+			  <label >Department:</label>
+			  <select class="form-control" name="department" id="department" required="required">
+			  	<option value="" disabled selected hidden>Select Department ...</option>
+			   	{% for d in department %}
+			      <option value="{{ d }}">{{ d }}</option>
+			    {% endfor %}>
+			  </select>
+			</div>
+		{% endif %}
+
+		{% if hire == 'Dean' %}
+			<div class="form-group">
+			  <label >Role:</label>
+			  <select class="form-control" name="cross_role" id="cross_role" required="required">
+			  	<option value="" disabled selected hidden>Select Role ...</option>
+			   	{% for c in cross_role %}
+			      <option value="{{ c }}">{{ c }}</option>
+			    {% endfor %}>
+			  </select>
+			</div>
+		{% endif %}
+
+		{% if hire == 'Dean' or hire == 'HoD' %}
+			<div class="form-group"> <!-- Date input -->
+	        	<label class="control-label" for="date">Date</label>
+	        	<input class="form-control" id="txtDate" name="startdate" placeholder="YYYY-MM-DD" type="text" onkeydown="return false" value="{{ startdate }}" />
+	      	</div>
+	      	<div class="form-group"> <!-- Date input -->
+	        	<label class="control-label" for="date">End Date</label>
+	        	<input class="form-control" id="txtDate" name="enddate" placeholder="YYYY-MM-DD" type="text" onkeydown="return false" value="{{ enddate }}" />
+	      	</div>
+      	{% endif %}
+    
+
+		{% if hire == 'Faculty'%}
+			<div class="form-group">
+				<label >Password</label>
+				<input type="password" class="form-control" name="password" id="password" placeholder="Password" required="required">
+			</div>
+		{% endif %}
+	  <button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	</div>
+{% endblock %}

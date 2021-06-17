@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %} Director {% endblock %}
+{% block content %} <h1>HoD/Dean portal</h1> {% endblock %}
+
+{% block nav_bar %}
+    <!-- Dropdown for approving leave application-->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        Received Leave Application
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Pending Application</a>
+        <a class="dropdown-item" href="#">Approved Application</a>
+      </div>
+    </li>
+
+    <!-- Dropdown for approving leave application-->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        Appoint HoD/Dean
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">HoD</a>
+        <a class="dropdown-item" href="#">Dean</a>
+      </div>
+{% endblock %}

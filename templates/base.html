@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    {% block speicific_style %}{% endblock %}
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="https://www.iitrpr.ac.in/sites/default/files/logo_0_2.png" alt=""> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="navbar-nav ml-auto">
+                {% if logged_in == 1 %}
+
+
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('log_out') }}">Log Out</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                </li>
+
+                {% block role %}
+                    {% if role=='faculty' %}
+                        <!-- Dropdown for leave application -->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Leave Application
+                          </a>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ url_for('applyForLeave') }}">Apply For Leave</a>
+                            <a class="dropdown-item" href="{{ url_for('history') }}">History</a>
+                          </div>
+                        </li>
+
+
+                    {% elif role=='hod' or role=='dean' %}
+                        <!-- Dropdown for leave application -->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Leave Application
+                          </a>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ url_for('applyForLeave') }}">Apply For Leave</a>
+                            <a class="dropdown-item" href="{{ url_for('history') }}">History</a>
+                          </div>
+                        </li>
+
+                         <!-- Dropdown for approving leave application-->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Received Leave Application
+                          </a>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ url_for('pendingApproval') }}">Pending Application</a>
+                            <a class="dropdown-item" href="{{ url_for('approvedApplication') }}">Approved Application</a>
+                          </div>
+                        </li>
+
+
+                    {% elif role=='director' %}
+                        <!-- Dropdown for approving leave application-->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Received Leave Application
+                          </a>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ url_for('pendingApproval') }}">Pending Application</a>
+                            <a class="dropdown-item" href="{{ url_for('approvedApplication') }}">Approved Application</a>
+                          </div>
+                        </li>
+
+                        <!-- Dropdown for approving leave application-->
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Hire
+                          </a>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ url_for('hire', hire_for='Faculty') }}">Hire Faculty</a>
+                            <a class="dropdown-item" href="{{ url_for('hire', hire_for='HoD') }}">Appoint HoD</a>
+                            <a class="dropdown-item" href="{{ url_for('hire', hire_for='Dean') }}">Appoint Dean</a>
+                          </div>
+                    {% endif %}
+
+                {% endblock %}
+                {% else %}
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{{ url_for('login_page') }}">Log In</a>
+                    </li>
+                {% endif %}
+              {% block nav_bar %}{% endblock %}
+              </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    {% block content %}
+        {% if logged == 2 %}
+            <div>
+                <h5>Error! This faculty doesn't exist.</h5>
+            </div>
+
+        {% endif %}
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+
+</body>
+</html>
